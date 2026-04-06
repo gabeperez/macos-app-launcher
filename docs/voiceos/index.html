@@ -7,7 +7,7 @@
   <meta name="description" content="Add macOS app launching to VoiceOS in under 2 minutes.">
   <meta property="og:title" content="macOS App Launcher for VoiceOS">
   <meta property="og:description" content="Control your Mac apps with voice. Open, focus, quit — instantly.">
-  <meta property="og:image" content="/og/voiceos-og.png">
+  <meta property="og:image" content="https://gabeperez.github.io/macos-app-launcher/og/voiceos-og.png">
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,14 +27,19 @@
       --text-display: #FFFFFF;
       --accent: #D71921;
       --interactive: #5B9BF6;
-      --space-xs: 4px;
-      --space-sm: 8px;
-      --space-md: 16px;
-      --space-lg: 24px;
-      --space-xl: 32px;
-      --space-2xl: 48px;
-      --space-3xl: 64px;
-      --space-4xl: 96px;
+    }
+
+    [data-theme="light"] {
+      --black: #F5F5F5;
+      --surface: #FFFFFF;
+      --surface-raised: #F0F0F0;
+      --border: #E8E8E8;
+      --border-visible: #CCCCCC;
+      --text-disabled: #999999;
+      --text-secondary: #666666;
+      --text-primary: #1A1A1A;
+      --text-display: #000000;
+      --interactive: #007AFF;
     }
 
     html {
@@ -50,27 +55,62 @@
       font-weight: 300;
       line-height: 1.5;
       min-height: 100vh;
+      transition: background 200ms ease-out, color 200ms ease-out;
     }
 
     .page {
       max-width: 640px;
       margin: 0 auto;
-      padding: var(--space-3xl) var(--space-lg);
+      padding: 64px 24px;
     }
 
-    /* --- HERO --- */
-    .hero {
-      margin-bottom: var(--space-3xl);
+    /* --- THEME TOGGLE --- */
+    .theme-toggle {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 10;
+      background: var(--surface);
+      border: 1px solid var(--border-visible);
+      border-radius: 999px;
+      padding: 8px 16px;
+      cursor: pointer;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      transition: all 200ms ease-out;
     }
+    .theme-toggle:hover {
+      color: var(--text-display);
+      border-color: var(--text-secondary);
+    }
+
+    /* --- BACK LINK --- */
+    .back-link {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      text-decoration: none;
+      margin-bottom: 32px;
+      display: inline-block;
+      transition: color 200ms ease-out;
+    }
+    .back-link:hover { color: var(--text-display); }
+
+    /* --- HERO --- */
+    .hero { margin-bottom: 64px; }
 
     .hero-label {
       font-family: 'Space Mono', monospace;
       font-size: 11px;
-      font-weight: 400;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--text-secondary);
-      margin-bottom: var(--space-md);
+      margin-bottom: 16px;
     }
 
     .hero-title {
@@ -80,11 +120,10 @@
       line-height: 1.0;
       letter-spacing: -0.03em;
       color: var(--text-display);
-      margin-bottom: var(--space-lg);
+      margin-bottom: 24px;
     }
 
     .hero-subtitle {
-      font-family: 'Space Grotesk', sans-serif;
       font-size: 18px;
       font-weight: 300;
       line-height: 1.4;
@@ -96,22 +135,17 @@
     .steps {
       display: flex;
       flex-direction: column;
-      gap: var(--space-xl);
-      margin-bottom: var(--space-3xl);
-    }
-
-    .step {
-      position: relative;
+      gap: 32px;
+      margin-bottom: 64px;
     }
 
     .step-number {
       font-family: 'Space Mono', monospace;
       font-size: 11px;
-      font-weight: 400;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--text-disabled);
-      margin-bottom: var(--space-sm);
+      margin-bottom: 8px;
     }
 
     .step-title {
@@ -119,13 +153,13 @@
       font-size: 18px;
       font-weight: 400;
       color: var(--text-display);
-      margin-bottom: var(--space-md);
+      margin-bottom: 16px;
     }
 
     .step-desc {
       font-size: 14px;
       color: var(--text-secondary);
-      margin-bottom: var(--space-md);
+      margin-bottom: 16px;
       line-height: 1.5;
     }
 
@@ -134,7 +168,7 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: var(--space-md);
+      padding: 16px;
       overflow-x: auto;
     }
 
@@ -146,24 +180,15 @@
       white-space: pre;
     }
 
-    .code-block .comment {
-      color: var(--text-disabled);
-    }
+    .code-block .comment { color: var(--text-disabled); }
+    .code-block .string { color: var(--text-secondary); }
+    .code-block .key { color: var(--text-display); }
 
-    .code-block .string {
-      color: var(--text-secondary);
-    }
-
-    .code-block .key {
-      color: var(--text-display);
-    }
-
-    /* --- CONFIG BLOCK (larger, the hero of step 3) --- */
     .config-block {
       background: var(--surface);
       border: 1px solid var(--border-visible);
       border-radius: 12px;
-      padding: var(--space-lg);
+      padding: 24px;
       overflow-x: auto;
     }
 
@@ -181,22 +206,30 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--text-disabled);
-      margin-bottom: var(--space-sm);
+      margin-bottom: 8px;
+    }
+
+    /* --- DOT ACCENT --- */
+    .dot-accent {
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 8px;
+      vertical-align: middle;
     }
 
     /* --- TOOLS LIST --- */
-    .tools {
-      margin-bottom: var(--space-3xl);
-    }
+    .tools { margin-bottom: 64px; }
 
     .tools-label {
       font-family: 'Space Mono', monospace;
       font-size: 11px;
-      font-weight: 400;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--text-secondary);
-      margin-bottom: var(--space-lg);
+      margin-bottom: 24px;
     }
 
     .tool-row {
@@ -206,10 +239,7 @@
       padding: 12px 0;
       border-bottom: 1px solid var(--border);
     }
-
-    .tool-row:last-child {
-      border-bottom: none;
-    }
+    .tool-row:last-child { border-bottom: none; }
 
     .tool-name {
       font-family: 'Space Mono', monospace;
@@ -223,20 +253,9 @@
       text-align: right;
     }
 
-    /* --- DOT ACCENT --- */
-    .dot-accent {
-      width: 6px;
-      height: 6px;
-      background: var(--accent);
-      border-radius: 50%;
-      display: inline-block;
-      margin-right: var(--space-sm);
-      vertical-align: middle;
-    }
-
     /* --- FOOTER --- */
     .footer {
-      padding-top: var(--space-2xl);
+      padding-top: 32px;
       border-top: 1px solid var(--border);
     }
 
@@ -251,40 +270,34 @@
       color: var(--text-secondary);
       text-decoration: none;
     }
+    .footer-text a:hover { color: var(--text-primary); }
 
-    .footer-text a:hover {
-      color: var(--text-primary);
-    }
-
-    /* --- REQUIREMENTS --- */
     .req {
       font-family: 'Space Mono', monospace;
       font-size: 12px;
       color: var(--text-disabled);
       letter-spacing: 0.04em;
-      margin-top: var(--space-xs);
+      margin-top: 4px;
     }
 
     /* --- RESPONSIVE --- */
     @media (max-width: 480px) {
-      .hero-title {
-        font-size: 48px;
-      }
-      .page {
-        padding: var(--space-3xl) var(--space-md);
-      }
-      .tool-row {
-        flex-direction: column;
-        gap: 4px;
-      }
-      .tool-desc {
-        text-align: left;
-      }
+      .hero-title { font-size: 48px; }
+      .page { padding: 48px 16px; }
+      .tool-row { flex-direction: column; gap: 4px; }
+      .tool-desc { text-align: left; }
+      .theme-toggle { top: 16px; right: 16px; padding: 6px 12px; font-size: 10px; }
     }
   </style>
 </head>
 <body>
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+    <span id="theme-label">LIGHT</span>
+  </button>
+
   <div class="page">
+
+    <a href="../" class="back-link">&lt; MACOS APP LAUNCHER</a>
 
     <!-- HERO -->
     <section class="hero">
@@ -299,7 +312,7 @@
       <div class="step">
         <div class="step-number"><span class="dot-accent"></span>STEP 01 — CLONE</div>
         <div class="step-title">Get the source</div>
-        <div class="code-block"><code>git clone https://github.com/gabepz/macos-app-launcher.git
+        <div class="code-block"><code>git clone https://github.com/gabeperez/macos-app-launcher.git
 cd macos-app-launcher</code></div>
       </div>
 
@@ -315,7 +328,7 @@ chmod +x start.sh</code></div>
         <div class="step-number"><span class="dot-accent"></span>STEP 03 — CONFIGURE</div>
         <div class="step-title">Add to VoiceOS</div>
         <p class="step-desc">Open VoiceOS settings and add this MCP server config. Replace the path with your actual install location.</p>
-        <div style="height: var(--space-md)"></div>
+        <div style="height: 16px"></div>
         <div class="config-label">VOICEOS MCP CONFIG</div>
         <div class="config-block"><code>{
   <span class="key">"mcpServers"</span>: {
@@ -330,7 +343,7 @@ chmod +x start.sh</code></div>
         <div class="step-number"><span class="dot-accent"></span>STEP 04 — USE</div>
         <div class="step-title">Start talking</div>
         <p class="step-desc">Restart VoiceOS. Then just say what you want.</p>
-        <div style="height: var(--space-sm)"></div>
+        <div style="height: 8px"></div>
         <div class="code-block"><code><span class="comment">"Open Chrome"</span>
 <span class="comment">"Switch to Slack"</span>
 <span class="comment">"Quit Spotify"</span>
@@ -361,7 +374,7 @@ chmod +x start.sh</code></div>
       </div>
       <div class="tool-row">
         <span class="tool-name">set_volume</span>
-        <span class="tool-desc">System volume 0–100</span>
+        <span class="tool-desc">System volume 0-100</span>
       </div>
       <div class="tool-row">
         <span class="tool-name">open_url</span>
@@ -371,9 +384,30 @@ chmod +x start.sh</code></div>
 
     <!-- FOOTER -->
     <footer class="footer">
-      <p class="footer-text"><a href="https://github.com/gabepz/macos-app-launcher">GITHUB</a> &nbsp;&middot;&nbsp; MIT LICENSE</p>
+      <p class="footer-text"><a href="https://github.com/gabeperez/macos-app-launcher">GITHUB</a> &nbsp;&middot;&nbsp; MIT LICENSE</p>
     </footer>
 
   </div>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      document.getElementById('theme-label').textContent = next === 'light' ? 'DARK' : 'LIGHT';
+      localStorage.setItem('theme', next);
+    }
+
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = saved || (prefersDark ? 'dark' : 'light');
+      if (theme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        document.getElementById('theme-label').textContent = 'DARK';
+      }
+    })();
+  </script>
 </body>
 </html>

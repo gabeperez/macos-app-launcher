@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>macOS App Launcher — MCP Server</title>
+  <meta name="description" content="A fast MCP server for opening, focusing, and quitting macOS apps by voice or from any MCP client.">
+  <meta property="og:title" content="macOS App Launcher">
+  <meta property="og:description" content="Open, focus, quit apps and control system volume via natural language. MCP server for any AI assistant.">
+  <meta property="og:image" content="https://gabeperez.github.io/macos-app-launcher/og/repo-og.png">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&family=Space+Grotesk:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black: #000000;
+      --surface: #111111;
+      --surface-raised: #1A1A1A;
+      --border: #222222;
+      --border-visible: #333333;
+      --text-disabled: #666666;
+      --text-secondary: #999999;
+      --text-primary: #E8E8E8;
+      --text-display: #FFFFFF;
+      --accent: #D71921;
+      --interactive: #5B9BF6;
+    }
+
+    [data-theme="light"] {
+      --black: #F5F5F5;
+      --surface: #FFFFFF;
+      --surface-raised: #F0F0F0;
+      --border: #E8E8E8;
+      --border-visible: #CCCCCC;
+      --text-disabled: #999999;
+      --text-secondary: #666666;
+      --text-primary: #1A1A1A;
+      --text-display: #000000;
+      --interactive: #007AFF;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--text-primary);
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      font-weight: 300;
+      line-height: 1.5;
+      min-height: 100vh;
+      transition: background 200ms ease-out, color 200ms ease-out;
+    }
+
+    .page {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 64px 24px;
+    }
+
+    /* --- THEME TOGGLE --- */
+    .theme-toggle {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 10;
+      background: var(--surface);
+      border: 1px solid var(--border-visible);
+      border-radius: 999px;
+      padding: 8px 16px;
+      cursor: pointer;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      transition: all 200ms ease-out;
+    }
+    .theme-toggle:hover {
+      color: var(--text-display);
+      border-color: var(--text-secondary);
+    }
+
+    /* --- HERO --- */
+    .hero { margin-bottom: 64px; }
+
+    .hero-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+
+    .hero-title {
+      font-family: 'Doto', 'Space Mono', monospace;
+      font-size: 56px;
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--text-display);
+      margin-bottom: 20px;
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+      font-weight: 300;
+      line-height: 1.5;
+      color: var(--text-secondary);
+      max-width: 520px;
+    }
+
+    .hero-subtitle strong {
+      color: var(--text-primary);
+      font-weight: 400;
+    }
+
+    .hero-links {
+      margin-top: 24px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 12px 24px;
+      border-radius: 999px;
+      background: var(--text-display);
+      color: var(--black);
+      transition: opacity 200ms ease-out;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+
+    .btn-secondary {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 12px 24px;
+      border-radius: 999px;
+      border: 1px solid var(--border-visible);
+      color: var(--text-primary);
+      transition: all 200ms ease-out;
+    }
+    .btn-secondary:hover { border-color: var(--text-secondary); color: var(--text-display); }
+
+    /* --- SECTIONS --- */
+    .section {
+      margin-bottom: 48px;
+    }
+
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 24px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: var(--text-display);
+      margin-bottom: 16px;
+    }
+
+    .section-desc {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0;
+    }
+
+    /* --- TOOL TABLE --- */
+    .tool-table { width: 100%; border-collapse: collapse; }
+
+    .tool-table th {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      text-align: left;
+      padding: 0 0 12px 0;
+      border-bottom: 1px solid var(--border-visible);
+    }
+
+    .tool-table td {
+      padding: 12px 16px 12px 0;
+      border-bottom: 1px solid var(--border);
+      vertical-align: baseline;
+    }
+
+    .tool-table tr:last-child td { border-bottom: none; }
+
+    .tool-table td:first-child {
+      font-family: 'Space Mono', monospace;
+      font-size: 14px;
+      color: var(--text-display);
+      white-space: nowrap;
+    }
+
+    .tool-table td:last-child {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    /* --- ALIAS TABLE --- */
+    .alias-table { width: 100%; border-collapse: collapse; }
+
+    .alias-table th {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      text-align: left;
+      padding: 0 0 12px 0;
+      border-bottom: 1px solid var(--border-visible);
+    }
+
+    .alias-table td {
+      padding: 10px 16px 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    .alias-table tr:last-child td { border-bottom: none; }
+
+    .alias-table td:first-child {
+      font-family: 'Space Mono', monospace;
+      color: var(--text-primary);
+    }
+
+    .alias-table td:last-child {
+      color: var(--text-secondary);
+    }
+
+    /* --- CODE BLOCKS --- */
+    .code-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      overflow-x: auto;
+      margin-bottom: 8px;
+    }
+
+    .code-block code {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      color: var(--text-primary);
+      line-height: 1.6;
+      white-space: pre;
+    }
+
+    .code-block .key { color: var(--text-display); }
+    .code-block .string { color: var(--text-secondary); }
+
+    .code-note {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      color: var(--text-disabled);
+      letter-spacing: 0.04em;
+      margin-top: 4px;
+    }
+
+    /* --- CONFIG BLOCK --- */
+    .config-block {
+      background: var(--surface);
+      border: 1px solid var(--border-visible);
+      border-radius: 12px;
+      padding: 24px;
+      overflow-x: auto;
+    }
+
+    .config-block code {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      color: var(--text-primary);
+      line-height: 1.7;
+      white-space: pre;
+    }
+
+    .config-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-disabled);
+      margin-bottom: 8px;
+    }
+
+    /* --- CONNECT CARDS --- */
+    .connect-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .connect-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      text-decoration: none;
+      transition: border-color 200ms ease-out;
+    }
+
+    .connect-card:hover { border-color: var(--text-secondary); }
+
+    .connect-card-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--text-display);
+      margin-bottom: 8px;
+    }
+
+    .connect-card-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .connect-card .dot-accent {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    /* --- VOICE EXAMPLES --- */
+    .voice-examples {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .voice-chip {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      color: var(--text-secondary);
+      border: 1px solid var(--border-visible);
+      border-radius: 999px;
+      padding: 6px 14px;
+      letter-spacing: 0.02em;
+    }
+
+    /* --- REQUIREMENTS --- */
+    .req-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .req-list li {
+      font-size: 15px;
+      color: var(--text-primary);
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .req-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 9px;
+      width: 6px;
+      height: 6px;
+      border: 1px solid var(--border-visible);
+      border-radius: 50%;
+    }
+
+    .req-list li a {
+      color: var(--interactive);
+      text-decoration: none;
+    }
+
+    /* --- FOOTER --- */
+    .footer {
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-text {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--text-disabled);
+    }
+
+    .footer-text a {
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+    .footer-text a:hover { color: var(--text-primary); }
+
+    /* --- RESPONSIVE --- */
+    @media (max-width: 580px) {
+      .hero-title { font-size: 40px; }
+      .page { padding: 48px 16px; }
+      .connect-grid { grid-template-columns: 1fr; }
+      .theme-toggle { top: 16px; right: 16px; padding: 6px 12px; font-size: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+    <span id="theme-label">LIGHT</span>
+  </button>
+
+  <div class="page">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-label">MCP SERVER</div>
+      <h1 class="hero-title">macOS App Launcher</h1>
+      <p class="hero-subtitle">A fast MCP server for <strong>opening, focusing, and quitting macOS apps</strong> by voice or from any MCP client. Much faster than macos-mcp.</p>
+      <div class="hero-links">
+        <a href="https://github.com/gabeperez/macos-app-launcher" class="btn-primary">GITHUB</a>
+        <a href="voiceos" class="btn-secondary">VOICEOS INSTALL</a>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- TOOLS -->
+    <section class="section">
+      <div class="section-label">TOOLS</div>
+      <table class="tool-table">
+        <thead>
+          <tr><th>Tool</th><th>What it does</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>open_app</td><td>Open an app by name or alias</td></tr>
+          <tr><td>focus_app</td><td>Bring a running app to the foreground</td></tr>
+          <tr><td>quit_app</td><td>Quit a running app gracefully</td></tr>
+          <tr><td>list_running_apps</td><td>List all currently open apps</td></tr>
+          <tr><td>set_volume</td><td>Set system volume 0-100</td></tr>
+          <tr><td>open_url</td><td>Open a URL in the default browser</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ALIASES -->
+    <section class="section">
+      <div class="section-label">BUILT-IN ALIASES</div>
+      <p class="section-desc">Say natural names — the server resolves them automatically.</p>
+      <table class="alias-table">
+        <thead>
+          <tr><th>You say</th><th>Opens</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>browser / chrome</td><td>Google Chrome</td></tr>
+          <tr><td>code / cursor</td><td>Cursor</td></tr>
+          <tr><td>messages / beeper</td><td>Beeper Desktop</td></tr>
+          <tr><td>vpn / protonvpn</td><td>ProtonVPN</td></tr>
+          <tr><td>terminal</td><td>Terminal</td></tr>
+          <tr><td>claude</td><td>Claude</td></tr>
+          <tr><td>spotify</td><td>Spotify</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <hr class="divider">
+
+    <!-- REQUIREMENTS -->
+    <section class="section">
+      <div class="section-label">REQUIREMENTS</div>
+      <ul class="req-list">
+        <li>macOS</li>
+        <li>Node.js 18+ — <a href="https://nodejs.org">nodejs.org</a></li>
+      </ul>
+    </section>
+
+    <!-- INSTALL -->
+    <section class="section">
+      <div class="section-label">INSTALL</div>
+      <div class="code-block"><code>git clone https://github.com/gabeperez/macos-app-launcher.git
+cd macos-app-launcher
+npm install
+chmod +x start.sh</code></div>
+      <div class="code-note">chmod is required — VoiceOS will throw EACCES without it</div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- CONNECT -->
+    <section class="section">
+      <div class="section-label">CONNECT</div>
+      <div class="connect-grid">
+        <a href="voiceos" class="connect-card">
+          <div class="connect-card-title"><span class="dot-accent"></span>VoiceOS</div>
+          <p class="connect-card-desc">Step-by-step install guide for voice control on macOS.</p>
+        </a>
+        <div class="connect-card">
+          <div class="connect-card-title">Claude Desktop</div>
+          <p class="connect-card-desc">Add to claude_desktop_config.json — see config below.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CLAUDE DESKTOP CONFIG -->
+    <section class="section">
+      <div class="config-label">CLAUDE DESKTOP CONFIG</div>
+      <div class="config-block"><code>{
+  <span class="key">"mcpServers"</span>: {
+    <span class="key">"macos-app-launcher"</span>: {
+      <span class="key">"command"</span>: <span class="string">"/absolute/path/to/macos-app-launcher/start.sh"</span>
+    }
+  }
+}</code></div>
+    </section>
+
+    <!-- VOICE EXAMPLES -->
+    <section class="section">
+      <div class="section-label">THEN JUST SAY</div>
+      <div class="voice-examples">
+        <span class="voice-chip">"Open Chrome"</span>
+        <span class="voice-chip">"Launch Spotify"</span>
+        <span class="voice-chip">"Focus Slack"</span>
+        <span class="voice-chip">"Quit Discord"</span>
+        <span class="voice-chip">"Set volume to 40"</span>
+        <span class="voice-chip">"Open github.com"</span>
+        <span class="voice-chip">"What apps are open?"</span>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- WHY FASTER -->
+    <section class="section">
+      <div class="section-label">WHY FASTER</div>
+      <p class="section-desc">macos-mcp runs via bun with a full JS runtime init on every invocation. This server uses <code style="font-family:'Space Mono',monospace;font-size:14px;color:var(--text-display)">open -a</code> (~50ms, native macOS) and osascript directly — no heavy dependencies, no startup delay.</p>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <p class="footer-text"><a href="https://github.com/gabeperez/macos-app-launcher">GITHUB</a> &nbsp;&middot;&nbsp; MIT LICENSE</p>
+    </footer>
+
+  </div>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      document.getElementById('theme-label').textContent = next === 'light' ? 'DARK' : 'LIGHT';
+      localStorage.setItem('theme', next);
+    }
+
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = saved || (prefersDark ? 'dark' : 'light');
+      if (theme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        document.getElementById('theme-label').textContent = 'DARK';
+      }
+    })();
+  </script>
+</body>
+</html>
