@@ -1,4 +1,4 @@
-# macos-app-launcher
+# macOS App Launcher
 
 > A fast MCP server for opening, focusing, and quitting macOS apps by voice or from any MCP client.
 
@@ -29,6 +29,8 @@ Say natural names — the server resolves them automatically:
 | vpn / protonvpn | ProtonVPN |
 | terminal | Terminal |
 
+See `APP_ALIASES` in `macos-app-launcher.ts` for the full list.
+
 ---
 
 ## Requirements
@@ -52,6 +54,8 @@ chmod +x start.sh
 ---
 
 ## Connect to VoiceOS
+
+See the [VoiceOS install guide](https://macos-app-launcher.pages.dev/voiceos) for step-by-step setup, or add it manually:
 
 **Settings → Integrations → Custom Integrations → Add**
 
@@ -81,9 +85,8 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
 ```json
 {
   "mcpServers": {
-    "macos-launcher": {
-      "command": "/absolute/path/to/macos-app-launcher/node_modules/.bin/tsx",
-      "args": ["/absolute/path/to/macos-app-launcher/macos-app-launcher.ts"]
+    "macos-app-launcher": {
+      "command": "/absolute/path/to/macos-app-launcher/start.sh"
     }
   }
 }

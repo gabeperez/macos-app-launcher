@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&family=Space+Grotesk:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1200px;
+      height: 630px;
+      overflow: hidden;
+      background: #000000;
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      position: relative;
+    }
+
+    /* Dot grid background */
+    .dot-grid {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, #222222 1px, transparent 1px);
+      background-size: 24px 24px;
+      opacity: 0.4;
+    }
+
+    /* Red accent line at top */
+    .accent-bar {
+      position: absolute;
+      top: 0;
+      left: 80px;
+      width: 120px;
+      height: 3px;
+      background: #D71921;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      padding: 80px 80px 64px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .top-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #999999;
+    }
+
+    .top-right {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #666666;
+    }
+
+    .middle {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .title {
+      font-family: 'Doto', 'Space Mono', monospace;
+      font-size: 96px;
+      font-weight: 400;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      color: #FFFFFF;
+    }
+
+    .subtitle {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px;
+      font-weight: 300;
+      line-height: 1.3;
+      color: #999999;
+      max-width: 640px;
+    }
+
+    .bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .commands {
+      font-family: 'Space Mono', monospace;
+      font-size: 14px;
+      color: #666666;
+      letter-spacing: 0.02em;
+    }
+
+    .commands span {
+      color: #999999;
+    }
+
+    .bottom-right {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #666666;
+    }
+  </style>
+</head>
+<body>
+  <div class="dot-grid"></div>
+  <div class="accent-bar"></div>
+  <div class="content">
+    <div class="top">
+      <span class="top-label">MACOS APP LAUNCHER</span>
+      <span class="top-right">INSTALL GUIDE</span>
+    </div>
+    <div class="middle">
+      <div class="title">VoiceOS</div>
+      <div class="subtitle">Control your Mac with voice. Launch apps, switch windows, set volume — all through natural language.</div>
+    </div>
+    <div class="bottom">
+      <div class="commands"><span>"Open Chrome"</span> &nbsp; <span>"Quit Spotify"</span> &nbsp; <span>"Volume 40"</span></div>
+      <div class="bottom-right">MACOS APP LAUNCHER</div>
+    </div>
+  </div>
+</body>
+</html>

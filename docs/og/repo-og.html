@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&family=Space+Grotesk:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1200px;
+      height: 630px;
+      overflow: hidden;
+      background: #000000;
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      position: relative;
+    }
+
+    /* Dot grid background */
+    .dot-grid {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, #222222 1px, transparent 1px);
+      background-size: 24px 24px;
+      opacity: 0.5;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      padding: 80px 80px 64px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .top-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #999999;
+    }
+
+    .middle {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 24px;
+    }
+
+    .title {
+      font-family: 'Doto', 'Space Mono', monospace;
+      font-size: 80px;
+      font-weight: 400;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      color: #FFFFFF;
+    }
+
+    .subtitle {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 24px;
+      font-weight: 300;
+      line-height: 1.3;
+      color: #999999;
+      max-width: 700px;
+    }
+
+    .bottom {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .tools-list {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #666666;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      background: #D71921;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .bottom-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      color: #666666;
+    }
+  </style>
+</head>
+<body>
+  <div class="dot-grid"></div>
+  <div class="content">
+    <div class="top-label">MCP SERVER</div>
+    <div class="middle">
+      <div class="title">macOS App Launcher</div>
+      <div class="subtitle">Open, focus, quit apps and control system volume via natural language. MCP server for any AI assistant.</div>
+    </div>
+    <div class="bottom">
+      <span class="dot"></span>
+      <span class="tools-list">OPEN &nbsp; FOCUS &nbsp; QUIT &nbsp; VOLUME &nbsp; URL &nbsp; LIST</span>
+    </div>
+  </div>
+</body>
+</html>
