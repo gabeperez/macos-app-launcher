@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 /**
- * fast-launcher — lightweight macOS app launcher MCP for VoiceOS
+ * macos-app-launcher — lightweight macOS app launcher MCP for VoiceOS
  * Uses `open -a` and osascript directly, no heavy dependencies.
  * Much faster than macos-mcp which loads a full bun runtime.
  */
@@ -57,7 +57,7 @@ async function osascript(script: string): Promise<string> {
   return stdout.trim();
 }
 
-const server = new McpServer({ name: "fast-launcher", version: "1.0.0" });
+const server = new McpServer({ name: "macos-app-launcher", version: "1.0.0" });
 
 server.tool(
   "open_app",
