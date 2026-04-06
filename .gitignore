@@ -1,0 +1,5 @@
+node_modules/
+dist/
+fast-launcher.py
+.DS_Store
+*.log
