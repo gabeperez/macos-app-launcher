@@ -6,7 +6,7 @@
   <title>macOS App Launcher — MCP Server</title>
   <meta name="description" content="A fast MCP server for opening, focusing, and quitting macOS apps by voice or from any MCP client.">
   <meta property="og:title" content="macOS App Launcher">
-  <meta property="og:description" content="Open, focus, quit apps and control system volume via natural language. MCP server for any AI assistant.">
+  <meta property="og:description" content="Open, focus, quit apps, open links in your browser, and control system volume via natural language. MCP server for any AI assistant.">
   <meta property="og:image" content="https://gabeperez.github.io/macos-app-launcher/og/repo-og.png">
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -467,7 +467,7 @@
           <tr><td>quit_app</td><td data-i18n="tool_quit">Quit a running app gracefully</td></tr>
           <tr><td>list_running_apps</td><td data-i18n="tool_list">List all currently open apps</td></tr>
           <tr><td>set_volume</td><td data-i18n="tool_volume">Set system volume 0-100</td></tr>
-          <tr><td>open_url</td><td data-i18n="tool_url">Open a URL in the default browser</td></tr>
+          <tr><td>open_url</td><td data-i18n="tool_url">Open a URL in the default browser (adds https:// automatically)</td></tr>
         </tbody>
       </table>
     </section>
@@ -582,7 +582,7 @@ chmod +x start.sh</code></div>
     const T = {
       en: {
         hero_label: 'MCP SERVER',
-        hero_subtitle_html: 'A fast MCP server for <strong>opening, focusing, and quitting macOS apps</strong> by voice or from any MCP client. Much faster than macos-mcp.',
+        hero_subtitle_html: 'A fast MCP server for <strong>opening, focusing, and quitting macOS apps</strong> \u2014 and <strong>opening links in your browser</strong> \u2014 by voice or from any MCP client. Much faster than macos-mcp.',
         btn_voiceos: 'VOICEOS INSTALL',
         demo_label: 'DEMO',
         tools_label: 'TOOLS',
@@ -593,7 +593,7 @@ chmod +x start.sh</code></div>
         tool_quit: 'Quit a running app gracefully',
         tool_list: 'List all currently open apps',
         tool_volume: 'Set system volume 0\u2013100',
-        tool_url: 'Open a URL in the default browser',
+        tool_url: 'Open a URL in the default browser (adds https:// automatically)',
         aliases_label: 'BUILT-IN ALIASES',
         aliases_desc: 'Say natural names \u2014 the server resolves them automatically.',
         th_say: 'You say',
@@ -607,13 +607,13 @@ chmod +x start.sh</code></div>
         connect_claude: 'Add to claude_desktop_config.json \u2014 see config below.',
         config_label: 'CLAUDE DESKTOP CONFIG',
         say_label: 'THEN JUST SAY',
-        voice_chips: ['"Open Chrome"', '"Launch Spotify"', '"Focus Slack"', '"Quit Discord"', '"Set volume to 40"', '"Open github.com"', '"What apps are open?"'],
+        voice_chips: ['"Open Chrome"', '"Launch Spotify"', '"Focus Slack"', '"Quit Discord"', '"Set volume to 40"', '"Open github.com"', '"Go to notion.so"', '"What apps are open?"'],
         why_label: 'WHY FASTER',
         why_desc_html: 'macos-mcp runs via bun with a full JS runtime init on every invocation. This server uses <code style="font-family:\'Space Mono\',monospace;font-size:14px;color:var(--text-display)">open -a</code> (~50ms, native macOS) and osascript directly \u2014 no heavy dependencies, no startup delay.',
       },
       ja: {
         hero_label: 'MCP \u30B5\u30FC\u30D0\u30FC',
-        hero_subtitle_html: '\u97F3\u58F0\u307E\u305F\u306F\u4EFB\u610F\u306EMCP\u30AF\u30E9\u30A4\u30A2\u30F3\u30C8\u304B\u3089<strong>macOS\u30A2\u30D7\u30EA\u306E\u8D77\u52D5\u30FB\u30D5\u30A9\u30FC\u30AB\u30B9\u30FB\u7D42\u4E86</strong>\u304C\u3067\u304D\u308B\u9AD8\u901F MCP\u30B5\u30FC\u30D0\u30FC\u3002macos-mcp\u3088\u308A\u9AD8\u901F\u3002',
+        hero_subtitle_html: '\u97F3\u58F0\u307E\u305F\u306F\u4EFB\u610F\u306EMCP\u30AF\u30E9\u30A4\u30A2\u30F3\u30C8\u304B\u3089<strong>macOS\u30A2\u30D7\u30EA\u306E\u8D77\u52D5\u30FB\u30D5\u30A9\u30FC\u30AB\u30B9\u30FB\u7D42\u4E86</strong>\u3084<strong>\u30D6\u30E9\u30A6\u30B6\u3067\u30EA\u30F3\u30AF\u3092\u958B\u304F</strong>\u3053\u3068\u304C\u3067\u304D\u308B\u9AD8\u901F MCP\u30B5\u30FC\u30D0\u30FC\u3002macos-mcp\u3088\u308A\u9AD8\u901F\u3002',
         btn_voiceos: 'VOICEOS \u30A4\u30F3\u30B9\u30C8\u30FC\u30EB',
         demo_label: '\u30C7\u30E2',
         tools_label: '\u30C4\u30FC\u30EB',
@@ -624,7 +624,7 @@ chmod +x start.sh</code></div>
         tool_quit: '\u30A2\u30D7\u30EA\u3092\u6B63\u5E38\u7D42\u4E86',
         tool_list: '\u73FE\u5728\u958B\u3044\u3066\u3044\u308B\u30A2\u30D7\u30EA\u3092\u4E00\u89A7\u8868\u793A',
         tool_volume: '\u30B7\u30B9\u30C6\u30E0\u97F3\u91CF\u30920\u301C100\u3067\u8A2D\u5B9A',
-        tool_url: '\u30C7\u30D5\u30A9\u30EB\u30C8\u30D6\u30E9\u30A6\u30B6\u3067URL\u3092\u958B\u304F',
+        tool_url: '\u30C7\u30D5\u30A9\u30EB\u30C8\u30D6\u30E9\u30A6\u30B6\u3067URL\u3092\u958B\u304F\uFF08https://\u81EA\u52D5\u4ED8\u4E0E\uFF09',
         aliases_label: '\u30D3\u30EB\u30C8\u30A4\u30F3\u30A8\u30A4\u30EA\u30A2\u30B9',
         aliases_desc: '\u81EA\u7136\u306A\u540D\u524D\u3067\u547C\u3073\u304B\u3051\u308B\u3060\u3051\u3002\u30B5\u30FC\u30D0\u30FC\u304C\u81EA\u52D5\u3067\u89E3\u6C7A\u3057\u307E\u3059\u3002',
         th_say: '\u547C\u3073\u304B\u3051',
@@ -638,7 +638,7 @@ chmod +x start.sh</code></div>
         connect_claude: 'claude_desktop_config.json\u306B\u8FFD\u52A0 \u2014 \u4E0B\u8A18\u306E\u8A2D\u5B9A\u3092\u53C2\u7167\u3002',
         config_label: 'CLAUDE DESKTOP \u8A2D\u5B9A',
         say_label: '\u3042\u3068\u306F\u8A71\u3059\u3060\u3051',
-        voice_chips: ['\u300CChrome\u3092\u958B\u3044\u3066\u300D', '\u300CSpotify\u3092\u8D77\u52D5\u300D', '\u300CSlack\u306B\u5207\u308A\u66FF\u3048\u300D', '\u300CDiscord\u3092\u7D42\u4E86\u300D', '\u300C\u97F3\u91CF\u309240\u306B\u300D', '\u300Cgithub.com\u3092\u958B\u3044\u3066\u300D', '\u300C\u4ECA\u958B\u3044\u3066\u308B\u30A2\u30D7\u30EA\u306F\uFF1F\u300D'],
+        voice_chips: ['\u300CChrome\u3092\u958B\u3044\u3066\u300D', '\u300CSpotify\u3092\u8D77\u52D5\u300D', '\u300CSlack\u306B\u5207\u308A\u66FF\u3048\u300D', '\u300CDiscord\u3092\u7D42\u4E86\u300D', '\u300C\u97F3\u91CF\u309240\u306B\u300D', '\u300Cgithub.com\u3092\u958B\u3044\u3066\u300D', '\u300Cnotion.so\u306B\u884C\u3063\u3066\u300D', '\u300C\u4ECA\u958B\u3044\u3066\u308B\u30A2\u30D7\u30EA\u306F\uFF1F\u300D'],
         why_label: '\u306A\u305C\u9AD8\u901F\uFF1F',
         why_desc_html: 'macos-mcp\u306Fbun\u3067\u5B9F\u884C\u3055\u308C\u3001\u6BCE\u56DE\u30D5\u30EBJS\u30E9\u30F3\u30BF\u30A4\u30E0\u3092\u521D\u671F\u5316\u3057\u307E\u3059\u3002\u3053\u306E\u30B5\u30FC\u30D0\u30FC\u306F<code style="font-family:\'Space Mono\',monospace;font-size:14px;color:var(--text-display)">open -a</code>\uFF08\u7D0450ms\u3001macOS\u30CD\u30A4\u30C6\u30A3\u30D6\uFF09\u3068osascript\u3092\u76F4\u63A5\u4F7F\u7528 \u2014 \u91CD\u3044\u4F9D\u5B58\u95A2\u4FC2\u3082\u8D77\u52D5\u9045\u5EF6\u3082\u3042\u308A\u307E\u305B\u3093\u3002',
       }
