@@ -1,6 +1,6 @@
 # macOS App Launcher
 
-> A fast MCP server for opening, focusing, and quitting macOS apps by voice or from any MCP client.
+> A fast MCP server for opening, focusing, and quitting macOS apps — and opening links in your browser — by voice or from any MCP client.
 
 Much faster than `macos-mcp` — uses `open -a` and `osascript` directly with no heavy runtime overhead.
 
@@ -20,7 +20,11 @@ https://github.com/user-attachments/assets/d5bd89a0-ec39-4519-9341-63b4cebf881d
 | `quit_app` | Quit a running app gracefully |
 | `list_running_apps` | List all currently open apps |
 | `set_volume` | Set system volume 0–100 |
-| `open_url` | Open a URL in the default browser |
+| `open_url` | Open a URL in the default browser (adds `https://` automatically) |
+
+### Open URLs by voice
+
+Say something like *"open google.com"* or *"go to notion.so"* and it opens in your default browser. It automatically adds `https://` if you don't include it.
 
 ### Built-in aliases
 
@@ -79,6 +83,7 @@ Then speak:
 - *"Quit Discord"*
 - *"Set volume to 40"*
 - *"Open github.com"*
+- *"Go to notion.so"*
 - *"What apps are open?"*
 
 ---
