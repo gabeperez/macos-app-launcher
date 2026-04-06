@@ -11,7 +11,7 @@
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&family=Space+Grotesk:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&family=Space+Grotesk:wght@300;400;500&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -51,7 +51,7 @@
     body {
       background: var(--black);
       color: var(--text-primary);
-      font-family: 'Space Grotesk', system-ui, sans-serif;
+      font-family: 'Space Grotesk', 'Noto Sans JP', system-ui, sans-serif;
       font-weight: 300;
       line-height: 1.5;
       min-height: 100vh;
@@ -64,12 +64,17 @@
       padding: 64px 24px;
     }
 
-    /* --- THEME TOGGLE --- */
-    .theme-toggle {
+    /* --- TOP CONTROLS --- */
+    .controls {
       position: fixed;
       top: 24px;
       right: 24px;
       z-index: 10;
+      display: flex;
+      gap: 8px;
+    }
+
+    .ctrl-btn {
       background: var(--surface);
       border: 1px solid var(--border-visible);
       border-radius: 999px;
@@ -82,12 +87,11 @@
       color: var(--text-secondary);
       transition: all 200ms ease-out;
     }
-    .theme-toggle:hover {
+    .ctrl-btn:hover {
       color: var(--text-display);
       border-color: var(--text-secondary);
     }
 
-    /* --- BACK LINK --- */
     .back-link {
       font-family: 'Space Mono', monospace;
       font-size: 11px;
@@ -101,7 +105,6 @@
     }
     .back-link:hover { color: var(--text-display); }
 
-    /* --- HERO --- */
     .hero { margin-bottom: 64px; }
 
     .hero-label {
@@ -131,7 +134,6 @@
       max-width: 440px;
     }
 
-    /* --- STEPS --- */
     .steps {
       display: flex;
       flex-direction: column;
@@ -149,7 +151,7 @@
     }
 
     .step-title {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Space Grotesk', 'Noto Sans JP', sans-serif;
       font-size: 18px;
       font-weight: 400;
       color: var(--text-display);
@@ -163,7 +165,6 @@
       line-height: 1.5;
     }
 
-    /* --- CODE BLOCKS --- */
     .code-block {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -209,7 +210,6 @@
       margin-bottom: 8px;
     }
 
-    /* --- DOT ACCENT --- */
     .dot-accent {
       width: 6px;
       height: 6px;
@@ -220,7 +220,6 @@
       vertical-align: middle;
     }
 
-    /* --- TOOLS LIST --- */
     .tools { margin-bottom: 64px; }
 
     .tools-label {
@@ -253,7 +252,6 @@
       text-align: right;
     }
 
-    /* --- FOOTER --- */
     .footer {
       padding-top: 32px;
       border-top: 1px solid var(--border);
@@ -280,56 +278,59 @@
       margin-top: 4px;
     }
 
-    /* --- RESPONSIVE --- */
     @media (max-width: 480px) {
       .hero-title { font-size: 48px; }
       .page { padding: 48px 16px; }
       .tool-row { flex-direction: column; gap: 4px; }
       .tool-desc { text-align: left; }
-      .theme-toggle { top: 16px; right: 16px; padding: 6px 12px; font-size: 10px; }
+      .controls { top: 16px; right: 16px; }
+      .ctrl-btn { padding: 6px 12px; font-size: 10px; }
     }
   </style>
 </head>
 <body>
-  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
-    <span id="theme-label">LIGHT</span>
-  </button>
+  <div class="controls">
+    <button class="ctrl-btn" onclick="toggleLang()" aria-label="Toggle language">
+      <span id="lang-label">JA</span>
+    </button>
+    <button class="ctrl-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+      <span id="theme-label">LIGHT</span>
+    </button>
+  </div>
 
   <div class="page">
 
-    <a href="../" class="back-link">&lt; MACOS APP LAUNCHER</a>
+    <a href="../" class="back-link" data-i18n="back">&lt; MACOS APP LAUNCHER</a>
 
-    <!-- HERO -->
     <section class="hero">
-      <div class="hero-label">MACOS APP LAUNCHER / INSTALL GUIDE</div>
+      <div class="hero-label" data-i18n="hero_label">MACOS APP LAUNCHER / INSTALL GUIDE</div>
       <h1 class="hero-title">VoiceOS</h1>
-      <p class="hero-subtitle">Control your Mac apps with voice. Open, focus, quit, set volume — all through natural language.</p>
+      <p class="hero-subtitle" data-i18n="hero_subtitle">Control your Mac apps with voice. Open, focus, quit, set volume — all through natural language.</p>
     </section>
 
-    <!-- STEPS -->
     <section class="steps">
 
       <div class="step">
-        <div class="step-number"><span class="dot-accent"></span>STEP 01 — CLONE</div>
-        <div class="step-title">Get the source</div>
+        <div class="step-number"><span class="dot-accent"></span><span data-i18n="step1_label">STEP 01 — CLONE</span></div>
+        <div class="step-title" data-i18n="step1_title">Get the source</div>
         <div class="code-block"><code>git clone https://github.com/gabeperez/macos-app-launcher.git
 cd macos-app-launcher</code></div>
       </div>
 
       <div class="step">
-        <div class="step-number"><span class="dot-accent"></span>STEP 02 — INSTALL</div>
-        <div class="step-title">Install dependencies</div>
+        <div class="step-number"><span class="dot-accent"></span><span data-i18n="step2_label">STEP 02 — INSTALL</span></div>
+        <div class="step-title" data-i18n="step2_title">Install dependencies</div>
         <div class="code-block"><code>npm install
 chmod +x start.sh</code></div>
-        <div class="req">REQUIRES NODE.JS 18+</div>
+        <div class="req" data-i18n="step2_req">REQUIRES NODE.JS 18+</div>
       </div>
 
       <div class="step">
-        <div class="step-number"><span class="dot-accent"></span>STEP 03 — CONFIGURE</div>
-        <div class="step-title">Add to VoiceOS</div>
-        <p class="step-desc">Open VoiceOS settings and add this MCP server config. Replace the path with your actual install location.</p>
+        <div class="step-number"><span class="dot-accent"></span><span data-i18n="step3_label">STEP 03 — CONFIGURE</span></div>
+        <div class="step-title" data-i18n="step3_title">Add to VoiceOS</div>
+        <p class="step-desc" data-i18n="step3_desc">Open VoiceOS settings and add this MCP server config. Replace the path with your actual install location.</p>
         <div style="height: 16px"></div>
-        <div class="config-label">VOICEOS MCP CONFIG</div>
+        <div class="config-label" data-i18n="step3_config_label">VOICEOS MCP CONFIG</div>
         <div class="config-block"><code>{
   <span class="key">"mcpServers"</span>: {
     <span class="key">"macos-app-launcher"</span>: {
@@ -340,49 +341,43 @@ chmod +x start.sh</code></div>
       </div>
 
       <div class="step">
-        <div class="step-number"><span class="dot-accent"></span>STEP 04 — USE</div>
-        <div class="step-title">Start talking</div>
-        <p class="step-desc">Restart VoiceOS. Then just say what you want.</p>
+        <div class="step-number"><span class="dot-accent"></span><span data-i18n="step4_label">STEP 04 — USE</span></div>
+        <div class="step-title" data-i18n="step4_title">Start talking</div>
+        <p class="step-desc" data-i18n="step4_desc">Restart VoiceOS. Then just say what you want.</p>
         <div style="height: 8px"></div>
-        <div class="code-block"><code><span class="comment">"Open Chrome"</span>
-<span class="comment">"Switch to Slack"</span>
-<span class="comment">"Quit Spotify"</span>
-<span class="comment">"Set volume to 40"</span>
-<span class="comment">"What apps are running?"</span></code></div>
+        <div class="code-block" id="voice-examples"></div>
       </div>
 
     </section>
 
-    <!-- TOOLS -->
     <section class="tools">
-      <div class="tools-label">AVAILABLE TOOLS</div>
+      <div class="tools-label" data-i18n="tools_label">AVAILABLE TOOLS</div>
       <div class="tool-row">
         <span class="tool-name">open_app</span>
-        <span class="tool-desc">Launch any app by name or alias</span>
+        <span class="tool-desc" data-i18n="tool_open">Launch any app by name or alias</span>
       </div>
       <div class="tool-row">
         <span class="tool-name">focus_app</span>
-        <span class="tool-desc">Bring a running app to front</span>
+        <span class="tool-desc" data-i18n="tool_focus">Bring a running app to front</span>
       </div>
       <div class="tool-row">
         <span class="tool-name">quit_app</span>
-        <span class="tool-desc">Gracefully close an app</span>
+        <span class="tool-desc" data-i18n="tool_quit">Gracefully close an app</span>
       </div>
       <div class="tool-row">
         <span class="tool-name">list_running_apps</span>
-        <span class="tool-desc">Show all visible apps</span>
+        <span class="tool-desc" data-i18n="tool_list">Show all visible apps</span>
       </div>
       <div class="tool-row">
         <span class="tool-name">set_volume</span>
-        <span class="tool-desc">System volume 0-100</span>
+        <span class="tool-desc" data-i18n="tool_volume">System volume 0-100</span>
       </div>
       <div class="tool-row">
         <span class="tool-name">open_url</span>
-        <span class="tool-desc">Open any URL in browser</span>
+        <span class="tool-desc" data-i18n="tool_url">Open any URL in browser</span>
       </div>
     </section>
 
-    <!-- FOOTER -->
     <footer class="footer">
       <p class="footer-text"><a href="https://github.com/gabeperez/macos-app-launcher">GITHUB</a> &nbsp;&middot;&nbsp; MIT LICENSE</p>
     </footer>
@@ -390,6 +385,80 @@ chmod +x start.sh</code></div>
   </div>
 
   <script>
+    const T = {
+      en: {
+        back: '< MACOS APP LAUNCHER',
+        hero_label: 'MACOS APP LAUNCHER / INSTALL GUIDE',
+        hero_subtitle: 'Control your Mac apps with voice. Open, focus, quit, set volume \u2014 all through natural language.',
+        step1_label: 'STEP 01 \u2014 CLONE',
+        step1_title: 'Get the source',
+        step2_label: 'STEP 02 \u2014 INSTALL',
+        step2_title: 'Install dependencies',
+        step2_req: 'REQUIRES NODE.JS 18+',
+        step3_label: 'STEP 03 \u2014 CONFIGURE',
+        step3_title: 'Add to VoiceOS',
+        step3_desc: 'Open VoiceOS settings and add this MCP server config. Replace the path with your actual install location.',
+        step3_config_label: 'VOICEOS MCP CONFIG',
+        step4_label: 'STEP 04 \u2014 USE',
+        step4_title: 'Start talking',
+        step4_desc: 'Restart VoiceOS. Then just say what you want.',
+        voice_examples: ['"Open Chrome"', '"Switch to Slack"', '"Quit Spotify"', '"Set volume to 40"', '"What apps are running?"'],
+        tools_label: 'AVAILABLE TOOLS',
+        tool_open: 'Launch any app by name or alias',
+        tool_focus: 'Bring a running app to front',
+        tool_quit: 'Gracefully close an app',
+        tool_list: 'Show all visible apps',
+        tool_volume: 'System volume 0\u2013100',
+        tool_url: 'Open any URL in browser',
+      },
+      ja: {
+        back: '< MACOS APP LAUNCHER',
+        hero_label: 'MACOS APP LAUNCHER / \u30A4\u30F3\u30B9\u30C8\u30FC\u30EB\u30AC\u30A4\u30C9',
+        hero_subtitle: '\u97F3\u58F0\u3067Mac\u30A2\u30D7\u30EA\u3092\u64CD\u4F5C\u3002\u8D77\u52D5\u30FB\u30D5\u30A9\u30FC\u30AB\u30B9\u30FB\u7D42\u4E86\u30FB\u97F3\u91CF\u8A2D\u5B9A \u2014 \u3059\u3079\u3066\u81EA\u7136\u8A00\u8A9E\u3067\u3002',
+        step1_label: '\u30B9\u30C6\u30C3\u30D701 \u2014 \u30AF\u30ED\u30FC\u30F3',
+        step1_title: '\u30BD\u30FC\u30B9\u3092\u53D6\u5F97',
+        step2_label: '\u30B9\u30C6\u30C3\u30D702 \u2014 \u30A4\u30F3\u30B9\u30C8\u30FC\u30EB',
+        step2_title: '\u4F9D\u5B58\u95A2\u4FC2\u3092\u30A4\u30F3\u30B9\u30C8\u30FC\u30EB',
+        step2_req: 'NODE.JS 18+\u304C\u5FC5\u8981',
+        step3_label: '\u30B9\u30C6\u30C3\u30D703 \u2014 \u8A2D\u5B9A',
+        step3_title: 'VoiceOS\u306B\u8FFD\u52A0',
+        step3_desc: 'VoiceOS\u306E\u8A2D\u5B9A\u3092\u958B\u304D\u3001\u3053\u306EMCP\u30B5\u30FC\u30D0\u30FC\u8A2D\u5B9A\u3092\u8FFD\u52A0\u3057\u307E\u3059\u3002\u30D1\u30B9\u3092\u5B9F\u969B\u306E\u30A4\u30F3\u30B9\u30C8\u30FC\u30EB\u5834\u6240\u306B\u7F6E\u304D\u63DB\u3048\u3066\u304F\u3060\u3055\u3044\u3002',
+        step3_config_label: 'VOICEOS MCP \u8A2D\u5B9A',
+        step4_label: '\u30B9\u30C6\u30C3\u30D704 \u2014 \u4F7F\u7528',
+        step4_title: '\u8A71\u3057\u304B\u3051\u308B\u3060\u3051',
+        step4_desc: 'VoiceOS\u3092\u518D\u8D77\u52D5\u3002\u3042\u3068\u306F\u8A71\u3059\u3060\u3051\u3067\u3059\u3002',
+        voice_examples: ['\u300CChrome\u3092\u958B\u3044\u3066\u300D', '\u300CSlack\u306B\u5207\u308A\u66FF\u3048\u300D', '\u300CSpotify\u3092\u7D42\u4E86\u300D', '\u300C\u97F3\u91CF\u309240\u306B\u300D', '\u300C\u4ECA\u958B\u3044\u3066\u308B\u30A2\u30D7\u30EA\u306F\uFF1F\u300D'],
+        tools_label: '\u5229\u7528\u53EF\u80FD\u306A\u30C4\u30FC\u30EB',
+        tool_open: '\u540D\u524D\u307E\u305F\u306F\u30A8\u30A4\u30EA\u30A2\u30B9\u3067\u30A2\u30D7\u30EA\u3092\u8D77\u52D5',
+        tool_focus: '\u5B9F\u884C\u4E2D\u306E\u30A2\u30D7\u30EA\u3092\u524D\u9762\u306B\u8868\u793A',
+        tool_quit: '\u30A2\u30D7\u30EA\u3092\u6B63\u5E38\u7D42\u4E86',
+        tool_list: '\u8868\u793A\u4E2D\u306E\u30A2\u30D7\u30EA\u3092\u4E00\u89A7\u8868\u793A',
+        tool_volume: '\u30B7\u30B9\u30C6\u30E0\u97F3\u91CF 0\u301C100',
+        tool_url: '\u30D6\u30E9\u30A6\u30B6\u3067URL\u3092\u958B\u304F',
+      }
+    };
+
+    let currentLang = 'en';
+
+    function applyLang(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang;
+      const t = T[lang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) el.textContent = t[key];
+      });
+      // Voice examples
+      const container = document.getElementById('voice-examples');
+      container.innerHTML = '<code>' + t.voice_examples.map(v => '<span class="comment">' + v + '</span>').join('\n') + '</code>';
+      document.getElementById('lang-label').textContent = lang === 'en' ? 'JA' : 'EN';
+      localStorage.setItem('lang', lang);
+    }
+
+    function toggleLang() {
+      applyLang(currentLang === 'en' ? 'ja' : 'en');
+    }
+
     function toggleTheme() {
       const html = document.documentElement;
       const current = html.getAttribute('data-theme');
@@ -400,13 +469,16 @@ chmod +x start.sh</code></div>
     }
 
     (function() {
-      const saved = localStorage.getItem('theme');
+      const savedTheme = localStorage.getItem('theme');
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const theme = saved || (prefersDark ? 'dark' : 'light');
+      const theme = savedTheme || (prefersDark ? 'dark' : 'light');
       if (theme === 'light') {
         document.documentElement.setAttribute('data-theme', 'light');
         document.getElementById('theme-label').textContent = 'DARK';
       }
+      const savedLang = localStorage.getItem('lang');
+      const browserLang = navigator.language.startsWith('ja') ? 'ja' : 'en';
+      applyLang(savedLang || browserLang);
     })();
   </script>
 </body>

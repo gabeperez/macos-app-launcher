@@ -11,7 +11,7 @@
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&family=Space+Grotesk:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&family=Space+Grotesk:wght@300;400;500&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -51,7 +51,7 @@
     body {
       background: var(--black);
       color: var(--text-primary);
-      font-family: 'Space Grotesk', system-ui, sans-serif;
+      font-family: 'Space Grotesk', 'Noto Sans JP', system-ui, sans-serif;
       font-weight: 300;
       line-height: 1.5;
       min-height: 100vh;
@@ -64,12 +64,17 @@
       padding: 64px 24px;
     }
 
-    /* --- THEME TOGGLE --- */
-    .theme-toggle {
+    /* --- TOP CONTROLS --- */
+    .controls {
       position: fixed;
       top: 24px;
       right: 24px;
       z-index: 10;
+      display: flex;
+      gap: 8px;
+    }
+
+    .ctrl-btn {
       background: var(--surface);
       border: 1px solid var(--border-visible);
       border-radius: 999px;
@@ -82,7 +87,7 @@
       color: var(--text-secondary);
       transition: all 200ms ease-out;
     }
-    .theme-toggle:hover {
+    .ctrl-btn:hover {
       color: var(--text-display);
       border-color: var(--text-secondary);
     }
@@ -160,9 +165,7 @@
     .btn-secondary:hover { border-color: var(--text-secondary); color: var(--text-display); }
 
     /* --- SECTIONS --- */
-    .section {
-      margin-bottom: 48px;
-    }
+    .section { margin-bottom: 48px; }
 
     .section-label {
       font-family: 'Space Mono', monospace;
@@ -171,15 +174,6 @@
       text-transform: uppercase;
       color: var(--text-secondary);
       margin-bottom: 20px;
-    }
-
-    .section-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 24px;
-      font-weight: 400;
-      letter-spacing: -0.01em;
-      color: var(--text-display);
-      margin-bottom: 16px;
     }
 
     .section-desc {
@@ -195,10 +189,10 @@
       margin: 48px 0;
     }
 
-    /* --- TOOL TABLE --- */
-    .tool-table { width: 100%; border-collapse: collapse; }
+    /* --- TABLES --- */
+    .tool-table, .alias-table { width: 100%; border-collapse: collapse; }
 
-    .tool-table th {
+    .tool-table th, .alias-table th {
       font-family: 'Space Mono', monospace;
       font-size: 11px;
       letter-spacing: 0.08em;
@@ -214,8 +208,13 @@
       border-bottom: 1px solid var(--border);
       vertical-align: baseline;
     }
+    .alias-table td {
+      padding: 10px 16px 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
 
-    .tool-table tr:last-child td { border-bottom: none; }
+    .tool-table tr:last-child td, .alias-table tr:last-child td { border-bottom: none; }
 
     .tool-table td:first-child {
       font-family: 'Space Mono', monospace;
@@ -223,42 +222,13 @@
       color: var(--text-display);
       white-space: nowrap;
     }
-
-    .tool-table td:last-child {
-      font-size: 14px;
-      color: var(--text-secondary);
-    }
-
-    /* --- ALIAS TABLE --- */
-    .alias-table { width: 100%; border-collapse: collapse; }
-
-    .alias-table th {
-      font-family: 'Space Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-      text-align: left;
-      padding: 0 0 12px 0;
-      border-bottom: 1px solid var(--border-visible);
-    }
-
-    .alias-table td {
-      padding: 10px 16px 10px 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 14px;
-    }
-
-    .alias-table tr:last-child td { border-bottom: none; }
+    .tool-table td:last-child { font-size: 14px; color: var(--text-secondary); }
 
     .alias-table td:first-child {
       font-family: 'Space Mono', monospace;
       color: var(--text-primary);
     }
-
-    .alias-table td:last-child {
-      color: var(--text-secondary);
-    }
+    .alias-table td:last-child { color: var(--text-secondary); }
 
     /* --- CODE BLOCKS --- */
     .code-block {
@@ -289,7 +259,6 @@
       margin-top: 4px;
     }
 
-    /* --- CONFIG BLOCK --- */
     .config-block {
       background: var(--surface);
       border: 1px solid var(--border-visible);
@@ -330,7 +299,6 @@
       text-decoration: none;
       transition: border-color 200ms ease-out;
     }
-
     .connect-card:hover { border-color: var(--text-secondary); }
 
     .connect-card-title {
@@ -433,25 +401,31 @@
       .hero-title { font-size: 40px; }
       .page { padding: 48px 16px; }
       .connect-grid { grid-template-columns: 1fr; }
-      .theme-toggle { top: 16px; right: 16px; padding: 6px 12px; font-size: 10px; }
+      .controls { top: 16px; right: 16px; }
+      .ctrl-btn { padding: 6px 12px; font-size: 10px; }
     }
   </style>
 </head>
 <body>
-  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
-    <span id="theme-label">LIGHT</span>
-  </button>
+  <div class="controls">
+    <button class="ctrl-btn" onclick="toggleLang()" aria-label="Toggle language">
+      <span id="lang-label">JA</span>
+    </button>
+    <button class="ctrl-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+      <span id="theme-label">LIGHT</span>
+    </button>
+  </div>
 
   <div class="page">
 
     <!-- HERO -->
     <section class="hero">
-      <div class="hero-label">MCP SERVER</div>
+      <div class="hero-label" data-i18n="hero_label">MCP SERVER</div>
       <h1 class="hero-title">macOS App Launcher</h1>
-      <p class="hero-subtitle">A fast MCP server for <strong>opening, focusing, and quitting macOS apps</strong> by voice or from any MCP client. Much faster than macos-mcp.</p>
+      <p class="hero-subtitle" data-i18n="hero_subtitle_html"></p>
       <div class="hero-links">
         <a href="https://github.com/gabeperez/macos-app-launcher" class="btn-primary">GITHUB</a>
-        <a href="voiceos" class="btn-secondary">VOICEOS INSTALL</a>
+        <a href="voiceos" class="btn-secondary" data-i18n="btn_voiceos">VOICEOS INSTALL</a>
       </div>
     </section>
 
@@ -459,29 +433,29 @@
 
     <!-- TOOLS -->
     <section class="section">
-      <div class="section-label">TOOLS</div>
+      <div class="section-label" data-i18n="tools_label">TOOLS</div>
       <table class="tool-table">
         <thead>
-          <tr><th>Tool</th><th>What it does</th></tr>
+          <tr><th data-i18n="th_tool">Tool</th><th data-i18n="th_what">What it does</th></tr>
         </thead>
         <tbody>
-          <tr><td>open_app</td><td>Open an app by name or alias</td></tr>
-          <tr><td>focus_app</td><td>Bring a running app to the foreground</td></tr>
-          <tr><td>quit_app</td><td>Quit a running app gracefully</td></tr>
-          <tr><td>list_running_apps</td><td>List all currently open apps</td></tr>
-          <tr><td>set_volume</td><td>Set system volume 0-100</td></tr>
-          <tr><td>open_url</td><td>Open a URL in the default browser</td></tr>
+          <tr><td>open_app</td><td data-i18n="tool_open">Open an app by name or alias</td></tr>
+          <tr><td>focus_app</td><td data-i18n="tool_focus">Bring a running app to the foreground</td></tr>
+          <tr><td>quit_app</td><td data-i18n="tool_quit">Quit a running app gracefully</td></tr>
+          <tr><td>list_running_apps</td><td data-i18n="tool_list">List all currently open apps</td></tr>
+          <tr><td>set_volume</td><td data-i18n="tool_volume">Set system volume 0-100</td></tr>
+          <tr><td>open_url</td><td data-i18n="tool_url">Open a URL in the default browser</td></tr>
         </tbody>
       </table>
     </section>
 
     <!-- ALIASES -->
     <section class="section">
-      <div class="section-label">BUILT-IN ALIASES</div>
-      <p class="section-desc">Say natural names — the server resolves them automatically.</p>
+      <div class="section-label" data-i18n="aliases_label">BUILT-IN ALIASES</div>
+      <p class="section-desc" data-i18n="aliases_desc">Say natural names — the server resolves them automatically.</p>
       <table class="alias-table">
         <thead>
-          <tr><th>You say</th><th>Opens</th></tr>
+          <tr><th data-i18n="th_say">You say</th><th data-i18n="th_opens">Opens</th></tr>
         </thead>
         <tbody>
           <tr><td>browser / chrome</td><td>Google Chrome</td></tr>
@@ -499,43 +473,43 @@
 
     <!-- REQUIREMENTS -->
     <section class="section">
-      <div class="section-label">REQUIREMENTS</div>
+      <div class="section-label" data-i18n="req_label">REQUIREMENTS</div>
       <ul class="req-list">
         <li>macOS</li>
-        <li>Node.js 18+ — <a href="https://nodejs.org">nodejs.org</a></li>
+        <li data-i18n="req_node_html"></li>
       </ul>
     </section>
 
     <!-- INSTALL -->
     <section class="section">
-      <div class="section-label">INSTALL</div>
+      <div class="section-label" data-i18n="install_label">INSTALL</div>
       <div class="code-block"><code>git clone https://github.com/gabeperez/macos-app-launcher.git
 cd macos-app-launcher
 npm install
 chmod +x start.sh</code></div>
-      <div class="code-note">chmod is required — VoiceOS will throw EACCES without it</div>
+      <div class="code-note" data-i18n="install_note">chmod is required — VoiceOS will throw EACCES without it</div>
     </section>
 
     <hr class="divider">
 
     <!-- CONNECT -->
     <section class="section">
-      <div class="section-label">CONNECT</div>
+      <div class="section-label" data-i18n="connect_label">CONNECT</div>
       <div class="connect-grid">
         <a href="voiceos" class="connect-card">
           <div class="connect-card-title"><span class="dot-accent"></span>VoiceOS</div>
-          <p class="connect-card-desc">Step-by-step install guide for voice control on macOS.</p>
+          <p class="connect-card-desc" data-i18n="connect_voiceos">Step-by-step install guide for voice control on macOS.</p>
         </a>
         <div class="connect-card">
           <div class="connect-card-title">Claude Desktop</div>
-          <p class="connect-card-desc">Add to claude_desktop_config.json — see config below.</p>
+          <p class="connect-card-desc" data-i18n="connect_claude">Add to claude_desktop_config.json — see config below.</p>
         </div>
       </div>
     </section>
 
     <!-- CLAUDE DESKTOP CONFIG -->
     <section class="section">
-      <div class="config-label">CLAUDE DESKTOP CONFIG</div>
+      <div class="config-label" data-i18n="config_label">CLAUDE DESKTOP CONFIG</div>
       <div class="config-block"><code>{
   <span class="key">"mcpServers"</span>: {
     <span class="key">"macos-app-launcher"</span>: {
@@ -547,24 +521,16 @@ chmod +x start.sh</code></div>
 
     <!-- VOICE EXAMPLES -->
     <section class="section">
-      <div class="section-label">THEN JUST SAY</div>
-      <div class="voice-examples">
-        <span class="voice-chip">"Open Chrome"</span>
-        <span class="voice-chip">"Launch Spotify"</span>
-        <span class="voice-chip">"Focus Slack"</span>
-        <span class="voice-chip">"Quit Discord"</span>
-        <span class="voice-chip">"Set volume to 40"</span>
-        <span class="voice-chip">"Open github.com"</span>
-        <span class="voice-chip">"What apps are open?"</span>
-      </div>
+      <div class="section-label" data-i18n="say_label">THEN JUST SAY</div>
+      <div class="voice-examples" id="voice-chips"></div>
     </section>
 
     <hr class="divider">
 
     <!-- WHY FASTER -->
     <section class="section">
-      <div class="section-label">WHY FASTER</div>
-      <p class="section-desc">macos-mcp runs via bun with a full JS runtime init on every invocation. This server uses <code style="font-family:'Space Mono',monospace;font-size:14px;color:var(--text-display)">open -a</code> (~50ms, native macOS) and osascript directly — no heavy dependencies, no startup delay.</p>
+      <div class="section-label" data-i18n="why_label">WHY FASTER</div>
+      <p class="section-desc" data-i18n="why_desc_html"></p>
     </section>
 
     <!-- FOOTER -->
@@ -575,6 +541,93 @@ chmod +x start.sh</code></div>
   </div>
 
   <script>
+    const T = {
+      en: {
+        hero_label: 'MCP SERVER',
+        hero_subtitle_html: 'A fast MCP server for <strong>opening, focusing, and quitting macOS apps</strong> by voice or from any MCP client. Much faster than macos-mcp.',
+        btn_voiceos: 'VOICEOS INSTALL',
+        tools_label: 'TOOLS',
+        th_tool: 'Tool',
+        th_what: 'What it does',
+        tool_open: 'Open an app by name or alias',
+        tool_focus: 'Bring a running app to the foreground',
+        tool_quit: 'Quit a running app gracefully',
+        tool_list: 'List all currently open apps',
+        tool_volume: 'Set system volume 0\u2013100',
+        tool_url: 'Open a URL in the default browser',
+        aliases_label: 'BUILT-IN ALIASES',
+        aliases_desc: 'Say natural names \u2014 the server resolves them automatically.',
+        th_say: 'You say',
+        th_opens: 'Opens',
+        req_label: 'REQUIREMENTS',
+        req_node_html: 'Node.js 18+ \u2014 <a href="https://nodejs.org">nodejs.org</a>',
+        install_label: 'INSTALL',
+        install_note: 'chmod is required \u2014 VoiceOS will throw EACCES without it',
+        connect_label: 'CONNECT',
+        connect_voiceos: 'Step-by-step install guide for voice control on macOS.',
+        connect_claude: 'Add to claude_desktop_config.json \u2014 see config below.',
+        config_label: 'CLAUDE DESKTOP CONFIG',
+        say_label: 'THEN JUST SAY',
+        voice_chips: ['"Open Chrome"', '"Launch Spotify"', '"Focus Slack"', '"Quit Discord"', '"Set volume to 40"', '"Open github.com"', '"What apps are open?"'],
+        why_label: 'WHY FASTER',
+        why_desc_html: 'macos-mcp runs via bun with a full JS runtime init on every invocation. This server uses <code style="font-family:\'Space Mono\',monospace;font-size:14px;color:var(--text-display)">open -a</code> (~50ms, native macOS) and osascript directly \u2014 no heavy dependencies, no startup delay.',
+      },
+      ja: {
+        hero_label: 'MCP \u30B5\u30FC\u30D0\u30FC',
+        hero_subtitle_html: '\u97F3\u58F0\u307E\u305F\u306F\u4EFB\u610F\u306EMCP\u30AF\u30E9\u30A4\u30A2\u30F3\u30C8\u304B\u3089<strong>macOS\u30A2\u30D7\u30EA\u306E\u8D77\u52D5\u30FB\u30D5\u30A9\u30FC\u30AB\u30B9\u30FB\u7D42\u4E86</strong>\u304C\u3067\u304D\u308B\u9AD8\u901F MCP\u30B5\u30FC\u30D0\u30FC\u3002macos-mcp\u3088\u308A\u9AD8\u901F\u3002',
+        btn_voiceos: 'VOICEOS \u30A4\u30F3\u30B9\u30C8\u30FC\u30EB',
+        tools_label: '\u30C4\u30FC\u30EB',
+        th_tool: '\u30C4\u30FC\u30EB',
+        th_what: '\u6A5F\u80FD',
+        tool_open: '\u540D\u524D\u307E\u305F\u306F\u30A8\u30A4\u30EA\u30A2\u30B9\u3067\u30A2\u30D7\u30EA\u3092\u958B\u304F',
+        tool_focus: '\u5B9F\u884C\u4E2D\u306E\u30A2\u30D7\u30EA\u3092\u524D\u9762\u306B\u8868\u793A',
+        tool_quit: '\u30A2\u30D7\u30EA\u3092\u6B63\u5E38\u7D42\u4E86',
+        tool_list: '\u73FE\u5728\u958B\u3044\u3066\u3044\u308B\u30A2\u30D7\u30EA\u3092\u4E00\u89A7\u8868\u793A',
+        tool_volume: '\u30B7\u30B9\u30C6\u30E0\u97F3\u91CF\u30920\u301C100\u3067\u8A2D\u5B9A',
+        tool_url: '\u30C7\u30D5\u30A9\u30EB\u30C8\u30D6\u30E9\u30A6\u30B6\u3067URL\u3092\u958B\u304F',
+        aliases_label: '\u30D3\u30EB\u30C8\u30A4\u30F3\u30A8\u30A4\u30EA\u30A2\u30B9',
+        aliases_desc: '\u81EA\u7136\u306A\u540D\u524D\u3067\u547C\u3073\u304B\u3051\u308B\u3060\u3051\u3002\u30B5\u30FC\u30D0\u30FC\u304C\u81EA\u52D5\u3067\u89E3\u6C7A\u3057\u307E\u3059\u3002',
+        th_say: '\u547C\u3073\u304B\u3051',
+        th_opens: '\u958B\u304F\u30A2\u30D7\u30EA',
+        req_label: '\u52D5\u4F5C\u8981\u4EF6',
+        req_node_html: 'Node.js 18+ \u2014 <a href="https://nodejs.org">nodejs.org</a>',
+        install_label: '\u30A4\u30F3\u30B9\u30C8\u30FC\u30EB',
+        install_note: 'chmod\u306F\u5FC5\u9808\u3067\u3059\u3002VoiceOS\u3067EACCES\u30A8\u30E9\u30FC\u304C\u51FA\u307E\u3059',
+        connect_label: '\u63A5\u7D9A',
+        connect_voiceos: 'macOS\u3067\u306E\u97F3\u58F0\u64CD\u4F5C\u306E\u30B9\u30C6\u30C3\u30D7\u30D0\u30A4\u30B9\u30C6\u30C3\u30D7\u30AC\u30A4\u30C9\u3002',
+        connect_claude: 'claude_desktop_config.json\u306B\u8FFD\u52A0 \u2014 \u4E0B\u8A18\u306E\u8A2D\u5B9A\u3092\u53C2\u7167\u3002',
+        config_label: 'CLAUDE DESKTOP \u8A2D\u5B9A',
+        say_label: '\u3042\u3068\u306F\u8A71\u3059\u3060\u3051',
+        voice_chips: ['\u300CChrome\u3092\u958B\u3044\u3066\u300D', '\u300CSpotify\u3092\u8D77\u52D5\u300D', '\u300CSlack\u306B\u5207\u308A\u66FF\u3048\u300D', '\u300CDiscord\u3092\u7D42\u4E86\u300D', '\u300C\u97F3\u91CF\u309240\u306B\u300D', '\u300Cgithub.com\u3092\u958B\u3044\u3066\u300D', '\u300C\u4ECA\u958B\u3044\u3066\u308B\u30A2\u30D7\u30EA\u306F\uFF1F\u300D'],
+        why_label: '\u306A\u305C\u9AD8\u901F\uFF1F',
+        why_desc_html: 'macos-mcp\u306Fbun\u3067\u5B9F\u884C\u3055\u308C\u3001\u6BCE\u56DE\u30D5\u30EBJS\u30E9\u30F3\u30BF\u30A4\u30E0\u3092\u521D\u671F\u5316\u3057\u307E\u3059\u3002\u3053\u306E\u30B5\u30FC\u30D0\u30FC\u306F<code style="font-family:\'Space Mono\',monospace;font-size:14px;color:var(--text-display)">open -a</code>\uFF08\u7D0450ms\u3001macOS\u30CD\u30A4\u30C6\u30A3\u30D6\uFF09\u3068osascript\u3092\u76F4\u63A5\u4F7F\u7528 \u2014 \u91CD\u3044\u4F9D\u5B58\u95A2\u4FC2\u3082\u8D77\u52D5\u9045\u5EF6\u3082\u3042\u308A\u307E\u305B\u3093\u3002',
+      }
+    };
+
+    let currentLang = 'en';
+
+    function applyLang(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang;
+      const t = T[lang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (!t[key]) return;
+        if (key.endsWith('_html')) el.innerHTML = t[key];
+        else el.textContent = t[key];
+      });
+      // Voice chips
+      const container = document.getElementById('voice-chips');
+      container.innerHTML = t.voice_chips.map(c => '<span class="voice-chip">' + c + '</span>').join('');
+      // Toggle label shows the OTHER language
+      document.getElementById('lang-label').textContent = lang === 'en' ? 'JA' : 'EN';
+      localStorage.setItem('lang', lang);
+    }
+
+    function toggleLang() {
+      applyLang(currentLang === 'en' ? 'ja' : 'en');
+    }
+
     function toggleTheme() {
       const html = document.documentElement;
       const current = html.getAttribute('data-theme');
@@ -585,13 +638,18 @@ chmod +x start.sh</code></div>
     }
 
     (function() {
-      const saved = localStorage.getItem('theme');
+      // Theme
+      const savedTheme = localStorage.getItem('theme');
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const theme = saved || (prefersDark ? 'dark' : 'light');
+      const theme = savedTheme || (prefersDark ? 'dark' : 'light');
       if (theme === 'light') {
         document.documentElement.setAttribute('data-theme', 'light');
         document.getElementById('theme-label').textContent = 'DARK';
       }
+      // Language
+      const savedLang = localStorage.getItem('lang');
+      const browserLang = navigator.language.startsWith('ja') ? 'ja' : 'en';
+      applyLang(savedLang || browserLang);
     })();
   </script>
 </body>
