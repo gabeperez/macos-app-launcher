@@ -34,33 +34,24 @@ Say natural names — the server resolves them automatically:
 ## Requirements
 
 - macOS
-- Node.js 18+
+- Node.js 18+ — download from [nodejs.org](https://nodejs.org) if needed
 
 ---
 
-## Setup
-
-### 1. Clone and install
+## Install
 
 ```bash
 git clone https://github.com/gabeperez/macos-app-launcher.git
 cd macos-app-launcher
 npm install
-```
-
-### 2. Make the start script executable
-
-```bash
 chmod +x start.sh
 ```
 
-> ⚠️ This step is required — the file won't run in VoiceOS without it. You'll get an `EACCES` permission error if you skip it.
+> ⚠️ The `chmod +x start.sh` step is required. You'll get an `EACCES` error in VoiceOS if you skip it.
 
 ---
 
-## Usage
-
-### With VoiceOS
+## Connect to VoiceOS
 
 **Settings → Integrations → Custom Integrations → Add**
 
@@ -68,6 +59,8 @@ chmod +x start.sh
 |---|---|
 | Name | 🚀 Launcher |
 | Launch command | `/absolute/path/to/macos-app-launcher/start.sh` |
+
+For example: `/Users/yourname/macos-app-launcher/start.sh`
 
 Then speak:
 
@@ -79,7 +72,9 @@ Then speak:
 - *"Open github.com"*
 - *"What apps are open?"*
 
-### With Claude Desktop
+---
+
+## Connect to Claude Desktop
 
 Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
 
@@ -98,7 +93,7 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
 
 ## Why faster than macos-mcp?
 
-`macos-mcp` runs via `bun` with a full JS runtime init on every invocation. This server uses `open -a` (native macOS, ~50ms) and `osascript` directly — no heavy dependencies, no startup overhead.
+`macos-mcp` runs via `bun` with a full JS runtime init on every invocation. This server uses `open -a` (~50ms, native macOS) and `osascript` directly — no heavy dependencies, no startup delay.
 
 ---
 
