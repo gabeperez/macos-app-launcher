@@ -55,7 +55,7 @@ chmod +x start.sh
 
 ## Connect to VoiceOS
 
-See the [VoiceOS install guide](https://macos-app-launcher.pages.dev/voiceos) for step-by-step setup, or add it manually:
+See the [VoiceOS install guide](https://gabeperez.github.io/macos-app-launcher/voiceos) for step-by-step setup, or add it manually:
 
 **Settings → Integrations → Custom Integrations → Add**
 
