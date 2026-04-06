@@ -396,6 +396,19 @@
     }
     .footer-text a:hover { color: var(--text-primary); }
 
+    /* --- VIDEO --- */
+    .video-container {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-visible);
+    }
+
+    .video-container video {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
     /* --- RESPONSIVE --- */
     @media (max-width: 580px) {
       .hero-title { font-size: 40px; }
@@ -426,6 +439,16 @@
       <div class="hero-links">
         <a href="https://github.com/gabeperez/macos-app-launcher" class="btn-primary">GITHUB</a>
         <a href="voiceos" class="btn-secondary" data-i18n="btn_voiceos">VOICEOS INSTALL</a>
+      </div>
+    </section>
+
+    <!-- DEMO -->
+    <section class="section">
+      <div class="section-label" data-i18n="demo_label">DEMO</div>
+      <div class="video-container">
+        <video autoplay loop muted playsinline>
+          <source src="https://github.com/user-attachments/assets/d5bd89a0-ec39-4519-9341-63b4cebf881d" type="video/mp4">
+        </video>
       </div>
     </section>
 
@@ -561,6 +584,7 @@ chmod +x start.sh</code></div>
         hero_label: 'MCP SERVER',
         hero_subtitle_html: 'A fast MCP server for <strong>opening, focusing, and quitting macOS apps</strong> by voice or from any MCP client. Much faster than macos-mcp.',
         btn_voiceos: 'VOICEOS INSTALL',
+        demo_label: 'DEMO',
         tools_label: 'TOOLS',
         th_tool: 'Tool',
         th_what: 'What it does',
@@ -591,6 +615,7 @@ chmod +x start.sh</code></div>
         hero_label: 'MCP \u30B5\u30FC\u30D0\u30FC',
         hero_subtitle_html: '\u97F3\u58F0\u307E\u305F\u306F\u4EFB\u610F\u306EMCP\u30AF\u30E9\u30A4\u30A2\u30F3\u30C8\u304B\u3089<strong>macOS\u30A2\u30D7\u30EA\u306E\u8D77\u52D5\u30FB\u30D5\u30A9\u30FC\u30AB\u30B9\u30FB\u7D42\u4E86</strong>\u304C\u3067\u304D\u308B\u9AD8\u901F MCP\u30B5\u30FC\u30D0\u30FC\u3002macos-mcp\u3088\u308A\u9AD8\u901F\u3002',
         btn_voiceos: 'VOICEOS \u30A4\u30F3\u30B9\u30C8\u30FC\u30EB',
+        demo_label: '\u30C7\u30E2',
         tools_label: '\u30C4\u30FC\u30EB',
         th_tool: '\u30C4\u30FC\u30EB',
         th_what: '\u6A5F\u80FD',
