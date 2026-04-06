@@ -6,6 +6,11 @@ Much faster than `macos-mcp` — uses `open -a` and `osascript` directly with no
 
 ---
 
+## Demo
+
+https://github.com/user-attachments/assets/d5bd89a0-ec39-4519-9341-63b4cebf881d
+
+
 ## Tools
 
 | Tool | What it does |
